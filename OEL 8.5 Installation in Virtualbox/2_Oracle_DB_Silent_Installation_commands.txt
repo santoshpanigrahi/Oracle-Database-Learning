@@ -1,0 +1,32 @@
+Configure Linux
+
+# yum update
+# reboot
+# yum install oracle-database-preinstall-19c
+
+Install Oracle 19c database software in silent mode
+
+[root@oracle_server ~]# mkdir -p /u01/app/oracle/product/19.0.0/db_1
+[root@oracle_server ~]# mv /root/V982063-01.zip /u01/app/oracle/product/19.0.0/db_1/
+[root@oracle_server ~]# chown -R oracle:oinstall  /u01
+
+[root@oracle_server ~]#  su oracle
+[oracle@oracle_server ~]$  cd /u01/app/oracle/product/19.0.0/db_1
+[oracle@oracle_server ~]$  unzip V982063-01.zip
+
+[oracle@oracle_server ~]$ cp /u01/app/oracle/product/19.0.0/db_1/install/response/db_install.rsp{,_original}
+[oracle@oracle_server ~]$ vi /u01/app/oracle/product/19.0.0/db_1/install/response/db_install.rsp
+
+[oracle@oracle ~]$ cd /u01/app/oracle/product/19.0.0/db_1
+[oracle@oracle db_1]$  ./runInstaller -executePrereqs -silent -responseFile /u01/app/oracle/product/19.0.0/db_1/install/response/db_install.rsp
+
+[oracle@oracle db_1]$  export CV_ASSUME_DISTID=OEL7.8
+[oracle@oracle db_1]$ ./runInstaller -silent -responseFile /u01/app/oracle/product/19.0.0/db_1/install/response/db_install.rsp
+
+[oracle@oracle db_1]$ exit
+[root@oracle ~]# /u01/app/oraInventory/orainstRoot.sh
+
+[root@oracle ~]# /u01/app/oracle/product/19.0.0/db_1/root.sh
+
+[root@oracle ~]# su oracle
+[oracle@oracle$ /u01/app/oracle/product/19.0.0/db_1/runInstaller -executeConfigTools -responseFile /u01/app/oracle/product/19.0.0/db_1/install/response/db_install.rsp -silent

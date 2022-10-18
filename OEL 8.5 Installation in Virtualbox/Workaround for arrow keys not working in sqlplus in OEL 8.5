@@ -1,0 +1,69 @@
+Workaround for arrow keys not working in sqlplus in OEL 8.5
+
+Commands ran for sucessful rlwrap utility(https://github.com/hanslub42/rlwrap.git) installation
+================================================================================================
+Make sure you log in as root user to avoid any permission issue.
+
+git --> Check if git is pre installed
+git clone https://github.com/hanslub42/rlwrap.git --> clone rlwrap repository
+cd rlwrap/
+
+## USUAL INSTALLATION:
+Usually just
+
+    ./configure;
+    make
+    sudo make install
+
+See the INSTALL file for more information.
+
+## IF CONFIGURE FILE IS NOT PRESENT AFTER GIT CLONE
+
+-- Check for configure file in this directory if present execute ./configure
+
+autoreconf --install # only needed if there is no ./configure script
+
+No you should be getting configure file to execute.
+./configure
+if still no configure file pulled to the rlwrap folder then execute below 5 commands sequentially
+
+aclocal
+autoconf
+autoheader
+automake --add-missing
+autoreconf --install
+
+./configure
+-- Here also if you encounter error "no acceptable c compiler found in $path" then
+you can execute "yum install gcc" and try running ./configure and if still error persist then run below
+"yum groupinstall "Development Tools"
+
+./configure
+After executing configure file if gets below error then run next 4 command sequentially
+"you need the gnu readline library(ftp://ftp.gnu.org/gnu/readline/ ) to build this program!"
+
+yum install libreadline
+yum install readline
+yum install readline-devel
+yum provides */libreadline*
+
+./configure
+This should run sucessfully. If still not ran sucessfully then wa.me/+91-9090980807
+Now run below 2 commands to install rlwrap utility sucessfully
+
+make
+make install
+
+su oracle
+
+Now run sqlplus with installed rlwrap prefixed.
+rlwrap sqlplus / as sysdba
+
+Configure aliases in .bash_profile
+=====================================
+alias sqlplus=”rlwrap sqlplus”
+alias dgmgrl=”rlwrap dgmgrl”
+alias rman=”rlwrap rman”
+alias lsnrctl=”rlwrap lsnrctl”
+alias impdp=”rlwrap impdp”
+alias expdp=”rlwrap expdp”
